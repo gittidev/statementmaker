@@ -1,69 +1,64 @@
-import './App.css'
-import Home from './pages/Home'
-import { useReducer,createContext, useRef } from 'react'
-
+import './App.css';
+import Home from './pages/Home';
+import { useReducer, createContext, useRef } from 'react';
 
 function reducer(state, action) {
     let nextState;
 
     switch (action.type) {
-      case "CREATE":
-        nextState = [action.data, ...state]
-        break;
-      default:
-        return state
+        case "CREATE":
+            nextState = [...state, action.data];
+            break;
+        case "DELETE":
+            nextState = state.filter(item => item.id !== action.data);
+            break;
+        case "UPDATE":
+            nextState = state.map(item =>
+                item.id === action.data.id ? { ...item, ...action.data } : item
+            );
+            break;
+        default:
+            return state;
     }
-
-
+    return nextState;
 }
 
-export const StatementContext = createContext()
-export const DispatchContext = createContext()
-
+export const StatementContext = createContext();
+export const DispatchContext = createContext();
 
 function App() {
-  const idRef = useRef(1)
-  const mokData = [
-    {
-    id : idRef.current++,
-    title : '받는분',
-    content : '금액'
-    },
-    {
-    id : idRef.current++,
-    title : 'mok2',
-    content : '세부내용'
-    },
-    {
-    id : idRef.current++,
-    title : 'mok3',
-    content : '세부내용'
-    }
-]
+    const idRef = useRef(1);
 
-  const [data, dispatch] = useReducer(reducer, mokData)
+    const [data, dispatch] = useReducer(reducer, []);
 
-  const onCreate = (createdDate, title, content) =>{
-    dispatch({
-      type : "CREATE",
-      data : {
-        id : idRef.current,
-        createdDate,
-        title,
-        content
-      }
-    })
-  }
+    const onCreate = (newData) => {
+        dispatch({
+            type: "CREATE",
+            data: { ...newData, id: idRef.current++ }
+        });
+    };
 
-  return (
-    <>
-    <StatementContext.Provider value={data}>
-      <DispatchContext.Provider value={onCreate}>
-        <Home />
-      </DispatchContext.Provider>
-    </StatementContext.Provider>
-    </>
-  )
+    const onDelete = (id) => {
+        dispatch({
+            type: "DELETE",
+            data: id
+        });
+    };
+
+    const onUpdate = (updatedData) => {
+        dispatch({
+            type: "UPDATE",
+            data: updatedData
+        });
+    };
+
+    return (
+        <StatementContext.Provider value={data}>
+            <DispatchContext.Provider value={{ onCreate, onDelete, onUpdate }}>
+                <Home />
+            </DispatchContext.Provider>
+        </StatementContext.Provider>
+    );
 }
 
-export default App
+export default App;

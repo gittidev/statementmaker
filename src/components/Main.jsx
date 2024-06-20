@@ -1,8 +1,10 @@
 import List from "./List"
-import Statement from "./Statement"
+import StatementForm from "./StatementForm"
+import StatementItem from "./StatementItem"
 import Button from "./Button"
 import "../styles/Main.scss"
 import { useRef } from "react"
+import { Route, Routes } from "react-router-dom"
 
 
 const Main = () =>{
@@ -13,13 +15,16 @@ const Main = () =>{
             <div>
             <List />
             </div>
-            <div>
-            <Statement />
-            </div>
-            <div>
-            <Button content={'Upload Signature'} action={'upload'}/>
-            <Button content={'Temporary Save'} action={'temp_save'} />
-            <Button content={'Download JPG'} action={'download'}/>
+            <div className="MainSection">
+
+            <Routes>
+                <Route path='/' element={<StatementForm />}/>
+                <Route path='/Statement/' element={<StatementForm />}/>
+
+                <Route path='/Statement/:id' element={<StatementItem/>}/>
+                <Route path='/create' element={<StatementForm />}/>
+            </Routes>
+                
             </div>
         </div>
         </>

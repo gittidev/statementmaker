@@ -1,0 +1,30 @@
+
+
+.Form {
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+}
+
+.section-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0; /* Adjust padding to reduce space between sections */
+    width: 100%;
+}
+
+.section {
+    flex: 1; /* Ensure sections take equal space */
+    margin: 0 15px;
+    padding: 10px;
+    box-shadow: 0px 5px 5px rgba(123, 123, 123, 0.192);
+    border-radius: 10px;
+    background-color: #fff; /* Add background color for visibility */
+}
+
+.btnSection {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 20px 10px; /* Adjust padding to fit better */
+}
